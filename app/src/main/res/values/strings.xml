@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">FirstEx</string>
+    <string name="main_question">Are you a cool guy?</string>
+    <string name="yes_answer">Yes</string>
+    <string name="no_answer">No</string>
+    <string name="first_quest">London is the capital of Great Britain.</string>
+    <string name="second_quest">The most popular social network is VK.</string>
+    <string name="third_quest">You are 18.</string>
+    <string name="tip_question">Do you really want to use a tip?</string>
+    <string name="stupid_quiz">Stupid Quiz</string>
+    <string name="tip">Tip</string>
+</resources>
