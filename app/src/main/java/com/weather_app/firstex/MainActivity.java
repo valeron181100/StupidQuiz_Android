@@ -59,16 +59,18 @@ public class MainActivity extends AppCompatActivity {
         mCurrentQuestion.addOnChangeListener(new IntegerPropertyCaller() {
             @Override
             public void call(int oldVal, int nVal) {
-                if(nVal >= 0 && nVal < mQuestionBank.size()) {
-                    Log.d("QUIZ", getResources().getResourceName(mQuestionBank.get(nVal).getKey().getTextResId()));
-                    mQuestionDisplay.setText(mQuestionBank.get(nVal).getKey().getTextResId());
-                    if (mQuestionBank.get(nVal).getValue()) {
-                        mYesButton.setEnabled(false);
-                        mNoButton.setEnabled(false);
-                    } else {
-                        mYesButton.setEnabled(true);
-                        mNoButton.setEnabled(true);
-                    }
+                Log.d(APP_TAG, getResources().getResourceName(mQuestionBank.get(nVal).getKey().getTextResId()));
+                mQuestionDisplay.setText(mQuestionBank.get(nVal).getKey().getTextResId());
+                if (mQuestionBank.get(nVal).getValue()) {
+                    mYesButton.setEnabled(false);
+                    mNoButton.setEnabled(false);
+                    mYesButton.getBackground().setAlpha(100);
+                    mNoButton.getBackground().setAlpha(100);
+                } else {
+                    mYesButton.setEnabled(true);
+                    mNoButton.setEnabled(true);
+                    mYesButton.getBackground().setAlpha(255);
+                    mNoButton.getBackground().setAlpha(255);
                 }
             }
         });
@@ -92,13 +94,19 @@ public class MainActivity extends AppCompatActivity {
         mYesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(checkAnswer(true)){
-                    Toast.makeText(MainActivity.this, "You are right!", Toast.LENGTH_SHORT).show();
+                if(mCurrentQuestion.getValue() != mQuestionBank.size()) {
+                    if (checkAnswer(true)) {
+                        Toast.makeText(MainActivity.this, "You are right!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "You are bad! Try again!", Toast.LENGTH_SHORT).show();
+                    }
+                    if (mCurrentQuestion.getValue() == mQuestionBank.size() - 1) {
+                        Toast.makeText(MainActivity.this, "It is the last question!", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        mCurrentQuestion.inc();
+                    }
                 }
-                else{
-                    Toast.makeText(MainActivity.this, "You are bad! Try again!", Toast.LENGTH_SHORT).show();
-                }
-                mCurrentQuestion.inc();
             }
         });
 
@@ -106,13 +114,14 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-                if(checkAnswer(false)){
-                    Toast.makeText(MainActivity.this, "You are right!", Toast.LENGTH_SHORT).show();
+                if(mCurrentQuestion.getValue() < 3) {
+                    if (checkAnswer(false)) {
+                        Toast.makeText(MainActivity.this, "You are right!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "You are bad! Try again!", Toast.LENGTH_SHORT).show();
+                    }
+                    mCurrentQuestion.inc();
                 }
-                else{
-                    Toast.makeText(MainActivity.this, "You are bad! Try again!", Toast.LENGTH_SHORT).show();
-                }
-                mCurrentQuestion.inc();
             }
         });
 
